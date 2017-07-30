@@ -1,0 +1,155 @@
+<div class="app-body-inner">
+  <div class="row-col row-col-xs b-b">
+    <!-- column -->
+
+
+    <div class="col-sm-4 col-md-3 light bg b-r list-lft {{userselect}}">
+      <div class="row-col">
+        <div class="p-a-xs b-b">
+          <div class="input-group">
+            <span class="input-group-addon no-border no-bg"><i class="fa fa-search"></i></span>
+            <input type="text" class="form-control no-border no-bg" placeholder="Buscar contatos" ng-model="contactSearch">
+          </div>
+        </div>
+        <div class="row-row">
+          <div class="row-body hover">
+            <div class="row-inner">
+              <div class="list inset">
+
+                <div class="list-item list-users pointer" ng-class="{'active': $index == hasdata}" ng-click="showdata(users, $index)"
+                ng-repeat="users in resp.retorno.mapaAlocacao.recursos | filter:contactSearch"> 
+                  <div class="list-left">
+                    <span class="label rounded lab-top blue-A700" ng-if="users.gerente" uib-tooltip="Gerente - Cód: {{users.codRecurso}}" tooltip-placement="right">{{users.codRecurso}}</span>
+                    <span class="label rounded lab-top grey-300" ng-if="!users.gerente" uib-tooltip="Cód: {{users.codRecurso}}" tooltip-placement="right">{{users.codRecurso}}</span>
+                    <span class="w-40 avatar"><img src="assets/images/profile.png" class="img-circle"></span>
+                  </div>
+                  <div class="list-body">
+                    {{users.nomeRecurso}}
+                    <small class="block">Cód Empresa: {{users.codEmpresa}}</small>
+                  </div>
+                </div>
+
+  
+        
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- /column -->
+
+
+
+
+    <!-- column -->
+    <div class="col-sm-6 col-md-7 list-rgt {{userselect}}">
+      <div class="row-col" ng-if="hasdata != null">
+
+        <button class="btn blue-800 btn-block btn-back" ng-click="backContact()"><i class="fa fa-angle-left"></i> Voltar</button>
+
+        <h5 class="p-sm">
+          {{resp.retorno.mapaAlocacao.nomeMapa}} - <small class="text-muted">{{datauser.nomeRecurso}}</small> <span ng-if="datauser.gerente" class="label rounded teal-A400">Gerente</span><br>
+          <small class="text-muted">CódRec: {{datauser.codRecurso}}</small> | <small class="text-muted">CódEmp: {{datauser.codEmpresa}}</small>
+        </h5>
+        
+
+
+        <div class="row inline-block box-tarefa" style="margin: 0 !important;">
+
+
+         <div class="col-sm-6 col-md-4" ng-repeat="periodo in resp.retorno.mapaAlocacao.periodo">
+          <div class="box">
+            <div class="box-header p-xs" ng-class="{'purple-300': periodo.feriado, 'teal-A400': !periodo.feriado}">
+              <h3>{{periodo.nomeDia}}</h3>
+              <small style="display: inline-block;">{{periodo.diaFormatado}}</small> <small ng-if="periodo.feriado" class="pull-right opacity-10">Feriado</small>
+            </div>
+            <div class="box-body">
+                <div ng-repeat="data1 in tarefasData" ng-show="data1.dia.timeStamp == periodo.timeStamp">
+                  
+                    
+                    <div class="list-btn" ng-repeat="data2 in data1filter = (data1.tarefas | filter : search)">
+                        <button class="btn rounded white btn-block" ng-class="{'active':btntarefa == $index}" ng-click="showtarefa(data2)">
+                          <p class="m-b-none">{{data2.descricaoTarefa}}</p>
+                          <small>{{ data2.dataHoraInicio | date : 'HH:mm'}} - {{ data2.dataHoraFim | date : 'HH:mm'}}</small>
+                        </button>
+
+                    </div><!-- data2 -->
+                    <p class="text-muted text-center m-b-none" ng-show="data1filter.length == 0">Nenhum registro encontrado!</p>
+
+                </div><!-- data1 -->
+
+            </div>
+          </div>
+        </div>
+
+
+        </div>
+
+
+
+
+<!-- .modal-tarefas -->
+<div id="modaltarefa" class="modal" data-backdrop="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+      	<h5 class="modal-title">{{modaldata.descricaoTarefa}}</h5>
+      </div>
+      <div class="modal-body text-leftp-sm">
+        
+        <div class="btn-group m-b">
+            <button type="button" ng-class="{'indigo': view}" class="btn btn-outline b-info" ng-click="view = !view">HTML</button>
+            <button type="button" ng-class="{'indigo': !view}" class="btn btn-outline b-info" ng-click="view = !view">Object</button>
+        </div>
+
+        <pre ng-show="!view" class="m-b-none">{{modaldata | json}}</pre>
+
+        <div ng-show="view">
+          <div class="row">
+            <div class="col-sm-6">
+                <p class="m-b-none">idTarefa: <b>{{modaldata.idTarefa}}</b></p>
+                <p class="m-b-none">codigoEmpresa: <b>{{modaldata.codigoEmpresa}}</b></p>
+                <p class="m-b-none">codigoUsuario: <b>{{modaldata.codigoUsuario}}</b></p>
+                <p class="m-b-none">codigoAgendamento: <b>{{modaldata.codigoAgendamento}}</b></p>
+                <p class="m-b-none">codigoCliente: <b>{{modaldata.codigoCliente}}</b></p>
+                <p class="m-b-none">dataHoraInicio: <b>{{modaldata.dataHoraInicio}}</b></p>
+                <p class="m-b-none">dataHoraFim: <b>{{modaldata.dataHoraFim}}</b></p>
+                <p class="m-b-none">codigoTipoAtividade: <b>{{modaldata.codigoTipoAtividade}}</b></p>
+                <p class="m-b-none">numeroLocalAtendimento: <b>{{modaldata.numeroLocalAtendimento}}</b></p>
+                <p class="m-b-none">numeroDesenvolvimento: <b>{{modaldata.numeroDesenvolvimento}}</b></p>
+                <p class="m-b-none">numeroRat: <b>{{modaldata.numeroRat}}</b></p>
+                <p class="m-b-none">numeroOportunidade: <b>{{modaldata.numeroOportunidade}}</b></p>
+            </div>
+            <div class="col-sm-6">
+                <p class="m-b-none">codTipoAgendamento: <b>{{modaldata.codTipoAgendamento}}</b></p>
+                <p class="m-b-none">codUsuarioGeracao: <b>{{modaldata.codUsuarioGeracao}}</b></p>
+                <p class="m-b-none">consideraDiaUtil: <b>{{modaldata.consideraDiaUtil}}</b></p>
+                <p class="m-b-none">codUsuarioAlteracao: <b>{{modaldata.codUsuarioAlteracao}}</b></p>
+                <p class="m-b-none">nomeDataHora: <b>{{modaldata.nomeDataHora}}</b></p>
+                <p class="m-b-none">dataHoraInicioFormatada: <b>{{modaldata.dataHoraInicioFormatada}}</b></p>
+                <p class="m-b-none">dataHoraFimFormatada: <b>{{modaldata.dataHoraFimFormatada}}</b></p>
+                <p class="m-b-none">descricaoTarefa: <b>{{modaldata.descricaoTarefa}}</b></p>
+                <p class="m-b-none">data: <b>{{modaldata.data}}</b></p>
+                <p class="m-b-none">feriado: <b>{{modaldata.feriado}}</b></p>
+            </div>
+          </div><!--row-->
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn danger p-x-md" data-dismiss="modal">Fechar</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div>
+</div>
+<!-- / .modal -->
+        
+
+          
+
+      </div><!--row-col-->
+    </div>
+    <!-- /column -->
+  </div>
+</div>

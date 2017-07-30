@@ -1,0 +1,79 @@
+<ion-view view-title="Tarefas de {{data.nomeRecurso}}">
+  <ion-content>
+    <ion-list>
+
+<div class="list m-b-none" ng-repeat="tarefa in data.tarefasData">
+    <div class="item item-divider" ng-class="{'bg-blue':tarefa.dia.feriado}">
+        {{tarefa.dia.nomeDia}}
+        <small class="date-list">{{tarefa.dia.diaFormatado}}</small>
+        <small ng-if="tarefa.dia.feriado" class="date-list pull-right bold">Feriado</small>
+    </div>
+    
+    <div class="box-buttons">
+      <button class="button button-block button-stable" ng-click="openModal(tarefas, data.nomeRecurso)" ng-repeat="tarefas in data1filter = (tarefa.tarefas | filter : search)">
+        <b>{{tarefas.descricaoTarefa}}</b><br>
+        <small>{{ tarefas.dataHoraInicio | date : 'HH:mm'}} - {{ tarefas.dataHoraFim | date : 'HH:mm'}}</small>
+      </button>
+    </div>
+    <p class="text-muted text-center m-b-none m-t" ng-show="data1filter.length == 0">Nenhum registro encontrado!</p>
+
+</div>
+
+
+
+
+<script id="modaltarefa.html" type="text/ng-template">
+      <ion-modal-view>
+        <ion-header-bar class="bar bar-header bar-positive">
+          <h1 class="title">{{datashow.descricaoTarefa}}</h1>
+          <button class="button button-clear button-primary" ng-click="closeModal()">Fechar</button>
+        </ion-header-bar>
+        <ion-content class="padding">
+          <p>Recurso: <b>{{modaluser}}</b></p>
+
+          <div class="button-bar bar-positive">
+            <a class="button" ng-class="{'active': view}" ng-click="view = !view">HTML</a>
+            <a class="button" ng-class="{'active': !view}" ng-click="view = !view">Object</a>
+          </div>
+
+          <pre ng-show="!view" class="bg-gray m-t-sm p-sm m-b-none">{{datashow | json}}</pre>
+
+          <ul class="list-html" ng-show="view">
+                <li class="item">idTarefa: <b>{{datashow.idTarefa}}</b></li>
+                <li class="item">codigoEmpresa: <b>{{datashow.codigoEmpresa}}</b></li>
+                <li class="item">codigoUsuario: <b>{{datashow.codigoUsuario}}</b></li>
+                <li class="item">codigoAgendamento: <b>{{datashow.codigoAgendamento}}</b></li>
+                <li class="item">codigoCliente: <b>{{datashow.codigoCliente}}</b></li>
+                <li class="item">dataHoraInicio: <b>{{datashow.dataHoraInicio}}</b></li>
+                <li class="item">dataHoraFim: <b>{{datashow.dataHoraFim}}</b></li>
+                <li class="item">codigoTipoAtividade: <b>{{datashow.codigoTipoAtividade}}</b></li>
+                <li class="item">numeroLocalAtendimento: <b>{{datashow.numeroLocalAtendimento}}</b></li>
+                <li class="item">numeroDesenvolvimento: <b>{{datashow.numeroDesenvolvimento}}</b></li>
+                <li class="item">numeroRat: <b>{{datashow.numeroRat}}</b></li>
+                <li class="item">numeroOportunidade: <b>{{datashow.numeroOportunidade}}</b></li>
+                <li class="item">codTipoAgendamento: <b>{{datashow.codTipoAgendamento}}</b></li>
+                <li class="item">codUsuarioGeracao: <b>{{datashow.codUsuarioGeracao}}</b></li>
+                <li class="item">consideraDiaUtil: <b>{{datashow.consideraDiaUtil}}</b></li>
+                <li class="item">codUsuarioAlteracao: <b>{{datashow.codUsuarioAlteracao}}</b></li>
+                <li class="item">nomeDataHora: <b>{{datashow.nomeDataHora}}</b></li>
+                <li class="item">dataHoraInicioFormatada: <b>{{datashow.dataHoraInicioFormatada}}</b></li>
+                <li class="item">dataHoraFimFormatada: <b>{{datashow.dataHoraFimFormatada}}</b></li>
+                <li class="item">descricaoTarefa: <b>{{datashow.descricaoTarefa}}</b></li>
+                <li class="item">data: <b>{{datashow.data}}</b></li>
+                <li class="item">feriado: <b>{{datashow.feriado}}</b></li>
+          </ul>
+
+
+
+
+        </ion-content>
+      </ion-modal-view>
+    </script>
+
+
+
+        
+
+    </ion-list>
+  </ion-content>
+</ion-view>
